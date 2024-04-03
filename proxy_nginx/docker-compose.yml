@@ -1,0 +1,13 @@
+version: "3.9"
+    
+services:
+  nginx:
+    image: nginx:latest
+    container_name: proxy_nginx
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - /data/docker_volumes/nginx/conf.d:/etc/nginx/conf.d
+      - /data/docker_volumes/certbot/etc/letsencrypt:/etc/letsencrypt
+      - /data/docker_volumes/certbot/var/lib/letsencrypt:/var/lib/letsencrypt

@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  mariadb:
+    image: mariadb:latest
+    networks:
+      - wordpress_net
+    container_name: wordpress_mariadb
+    restart: always
+    env_file: .env
+    volumes:
+      - /data/docker_volumes/wordpress/mariadb:/var/lib/mysql
+  wordpress:
+    image: wordpress:latest  
+    depends_on:
+      - mariadb
+    networks:
+      - wordpress_net
+    container_name: wordpress
+    restart: always
+    ports:
+      - "88:80"
+    environment:
+      WORDPRESS_DB_HOST: wordpress_mariadb
+      WORDPRESS_DB_NAME: ${MARIADB_DATABASE}
+      WORDPRESS_DB_USER: ${MARIADB_USER}
+      WORDPRESS_DB_PASSWORD: ${MARIADB_PASSWORD}
+      TZ: Asia/Seoul
+    volumes:
+      - /data/docker_volumes/wordpress/wordpress:/var/www/html 
+
+networks:
+  wordpress_net:
+    name: wordpress_net
+    driver: bridge
+
+

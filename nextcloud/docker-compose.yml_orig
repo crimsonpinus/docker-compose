@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  mariadb:
+    image: mariadb:latest
+    networks:
+      - nextcloud_net
+    container_name: nextcloud_mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: Nextcloud!
+      MARIADB_DATABASE: nextcloud
+      MARIADB_USER: nextcloud
+      MARIADB_PASSWORD: Nextcloud!
+    volumes:
+      - /data/docker_volumes/nextcloud/mariadb:/var/lib/mysql
+  nextcloud:
+    image: nextcloud:28  #stable-fpm-alpine
+    depends_on:
+      - mariadb
+    networks:
+      - nextcloud_net
+    container_name: nextcloud
+    restart: always
+    ports:
+      - "8585:80"
+    environment:
+      MYSQL_HOST: mariadb:3306
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: Nextcloud!
+      TZ: Asia/Seoul
+    volumes:
+      - /data/docker_volumes/nextcloud/nextcloud/nextcloud:/var/www/html 
+      - /data/docker_volumes/nextcloud/nextcloud/apps:/var/www/html/custom_apps 
+      - /data/docker_volumes/nextcloud/nextcloud/config:/var/www/html/config 
+      - /data/docker_volumes/nextcloud/nextcloud/data:/var/www/html/data 
+      - /data/docker_volumes/nextcloud/nextcloud/theme:/var/www/html/themes 
+
+networks:
+  nextcloud_net:
+    name: nextcloud_net
+    driver: bridge
+
+

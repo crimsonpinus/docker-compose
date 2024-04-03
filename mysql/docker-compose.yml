@@ -1,0 +1,25 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:latest
+    networks:
+      - mysql
+    platform: linux/x86_64
+    container_name: mysql  
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Mysql!
+        #MYSQL_DATABASE: mysql
+      MYSQL_USER: crimson
+      MYSQL_PASSWORD: Mysql!
+      TZ: Asia/Seoul
+    volumes:
+      - /data/docker_volumes/mysql/data:/var/lib/mysql
+      - /data/docker_volumes/mysql/config:/etc/mysql/conf.d
+      - /data/docker_volumes/mysql/init:/docker-entrypoint-initdb.d
+networks:
+  mysql:
+    name: mysql
+    driver: bridge

@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    restart: always
+    container_name: portainer 
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/docker_volumes/portainer/data:/data
+      - /data/docker_volumes/certbot/etc/letsencrypt/live/r2m.kr:/certs/live/r2m.kr:ro
+      - /data/docker_volumes/certbot/etc/letsencrypt/archive/r2m.kr:/certs/archive/r2m.kr:ro
+    command: 
+      --sslcert /certs/live/r2m.kr/fullchain.pem 
+      --sslkey /certs/live/r2m.kr/privkey.pem

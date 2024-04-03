@@ -1,0 +1,13 @@
+version: "3.9"
+    
+services:
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    ports:
+      - "80:80"
+    volumes:
+      - /data/docker_volumes/certbot/etc/letsencrypt:/etc/letsencrypt
+      - /data/docker_volumes/certbot/var/lib/letsencrypt:/var/lib/letsencrypt
+    command: certonly --standalone  --email crimsonpinus@outlook.com --agree-tos --no-eff-email --force-renewal -v ${DOMAIN} #--dry-run
+      #-d r2m.kr -d app.r2m.kr -d  cloud.r2m.kr -d code.r2m.kr -d dashboard.r2m.kr -d docker.r2m.kr -d file.r2m.kr -d geo.r2m.kr -d grafana.r2m.kr -d jenkins.r2m.kr -d kibana.r2m.kr -d nexus.r2m.kr -d plex.r2m.kr -d portainer.r2m.kr -d router.r2m.kr -d test.r2m.kr -d www.r2m.kr 
